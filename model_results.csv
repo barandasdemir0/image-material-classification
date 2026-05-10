@@ -1,0 +1,11 @@
+Metrik,Değer
+Genel Doğruluk,0.5980
+F1 Score (Macro),0.5904
+F1 Score (Weighted),0.5966
+Precision (Macro),0.5991
+Recall (Macro),0.5903
+Toplam Test Verisi,398
+Glass Doğruluk,0.6200
+Metal Doğruluk,0.5488
+Paper Doğruluk,0.6975
+Plastic Doğruluk,0.4948
