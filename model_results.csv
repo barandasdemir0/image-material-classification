@@ -1,10 +1,10 @@
-Metrik,Değer
-Genel Doğruluk,0.6357
-F1 Score (Macro),0.6294
-F1 (Weighted),0.6389
-Precision,0.6363
-Recall,0.6266
-Glass Acc,0.6100
-Metal Acc,0.5488
-Paper Acc,0.7395
-Plastic Acc,0.6082
+Metrik,MobileNetV2
+Genel Doğruluk,0.8241
+F1 Score (Macro),0.8166
+F1 (Weighted),0.8209
+Precision,0.8177
+Recall,0.8201
+Glass Acc,0.6900
+Metal Acc,0.8902
+Paper Acc,0.9580
+Plastic Acc,0.7423
