@@ -1,100 +1,89 @@
 # Malzeme Sınıflandırma Projesi
 
-Bu proje, derin öğrenme kullanarak görüntülerden 4 farklı malzeme türünü sınıflandırır:
+Bu proje, tek nesne tespiti yerine görüntü sınıflandırma yapar ve 4 malzeme türünü ayırır:
 
-- Glass (Cam)
+- Glass
 - Metal
-- Paper (Kağıt)
-- Plastic (Plastik)
+- Paper
+- Plastic
 
-Proje, Jupyter Notebook içinde eğitilmiş bir CNN modeline dayanır ve model sonuçlarını confusion matrix, F1 score, doğruluk ve sınıf dağılımları ile birlikte sunar.
+Ödevin beklediği temel şartlar projeye eklenmiştir:
 
-## Proje İçeriği
+- Veri artırma (rotation, shift, zoom, flip) kullanımı
+- Aşırı öğrenmeyi azaltmak için `Dropout`
+- Eğitilmiş `.h5` model dosyasının web arayüzüne entegre edilmesi
+- Basit çalışan bir `Streamlit` arayüzü
 
-- `model_training.ipynb`: Model eğitimi, değerlendirme ve görselleştirme notebook'u
-- `İnternetVeriSetleri/`: Görüntü veri seti klasörü
-- `model_results.csv`: Eğitim sonunda kaydedilen özet metrikler
+## Proje Bileşenleri
+
+- `model_training.ipynb`: Eğitim, değerlendirme ve görselleştirme notebook'u
+- `project/api/model/model.h5`: Kaydedilmiş Keras modeli
+- `project/api/streamlit_app.py`: Çalışan Streamlit arayüzü
+- `project/api/app.py`: Flask tabanlı prediction API
+- `project/api/utils/predictor.py`: Model yükleme ve tahmin yardımcı sınıfı
+- `İnternetVeriSetleri/`: 4 sınıflı görüntü veri seti klasörü
 
 ## Veri Seti
 
-Veri seti dört sınıftan oluşur:
+Klasör yapısı yalnızca şu sınıfları içerir:
 
-- `glass` - 501 görüntü
-- `metal` - 410 görüntü
-- `paper` - 594 görüntü
-- `plastic` - 482 görüntü
+- `glass`
+- `metal`
+- `paper`
+- `plastic`
 
-Toplam: **1987 görüntü**
+Bu klasör üzerinde ekstra sınıf bırakılmamıştır.
 
-## Kullanılan Yöntem
+## Kullanılan Eğitim Akışı
 
-- Görseller PIL ile okunur
-- 128x128 boyutuna yeniden ölçeklendirilir
+- Görseller `PIL` ile okunur
+- 128x128 boyutuna ölçeklendirilir
 - Piksel değerleri 0-1 aralığına normalize edilir
-- CNN (Convolutional Neural Network) modeli ile sınıflandırma yapılır
-- Test seti üzerinde performans ölçülür
+- Veri artırma ile eğitim seti çeşitlendirilir
+- CNN / transfer learning katmanlarında `Dropout` ile overfitting azaltılır
+- Confusion matrix ve sınıf bazlı metrikler üretilir
 
-## Model Mimarisi
+## Arayüz
 
-Model şu katmanlardan oluşur:
+Kullanıcı bir görsel yükler ve model şu bilgileri döndürür:
 
-- 4 adet `Conv2D` + `MaxPooling2D`
-- `Flatten`
-- `Dense(128)`
-- `Dropout(0.5)`
-- `Dense(4, softmax)`
+- Tahmin edilen sınıf
+- Güven skoru
 
-## Elde Edilen Sonuçlar
+Streamlit arayüzünü çalıştırmak için:
 
-Notebook çalıştırıldığında elde edilen temel metrikler:
-
-- Accuracy: **59.80%**
-- F1 Score (Macro): **0.5904**
-- F1 Score (Weighted): **0.5966**
-- Precision (Macro): **0.5991**
-- Recall (Macro): **0.5903**
-
-### Sınıf Bazında Performans
-
-- Glass: **62.00%**
-- Metal: **54.88%**
-- Paper: **69.75%**
-- Plastic: **49.48%**
-
-## Notebook'ta Üretilen Çıktılar
-
-- Sınıf dağılım grafikleri
-- Eğitim doğruluk/kayıp grafikleri
-- Confusion matrix
-- F1 score grafikleri
-- Örnek tahmin görselleri
-- Sonuçların CSV dosyasına kaydı
-
-## Çalıştırma
-
-Notebook'u açıp hücreleri sırayla çalıştırabilirsiniz.
-
-Gerekli paketler:
-
-- numpy
-- pandas
-- matplotlib
-- seaborn
-- scikit-learn
-- pillow
-- tensorflow
-
-Eğer ortamınızda eksik paket varsa kurulum için:
-
-```bash
-pip install numpy pandas matplotlib seaborn scikit-learn pillow tensorflow
+```powershell
+cd project\api
+streamlit run streamlit_app.py
 ```
 
-## Notlar
+Flask API için:
 
-- Notebook içinde veri yükleme işlemi `PIL` ile yapılır.
-- `cv2` yerine `PIL` kullanıldığı için resim okuma uyumluluğu daha yüksek olur.
-- Model sonuçları veri seti ve eğitim ayarlarına göre değişebilir.
+```powershell
+cd project\api
+python app.py
+```
+
+## Kurulum
+
+Gerekli paketler `project/api/requirements.txt` içinde listelenmiştir.
+
+Kurulum örneği:
+
+```powershell
+pip install -r project\api\requirements.txt
+```
+
+## Notebook Çıktıları
+
+Notebook çalıştırıldığında şu çıktılar üretilir:
+
+- Sınıf dağılım grafikleri
+- Eğitim doğruluk / kayıp grafikleri
+- Confusion matrix
+- F1 score ve classification report
+- Yanlış sınıflandırılan örnekler
+- Final model kaydı
 
 ## Klasör Yapısı
 
@@ -103,13 +92,21 @@ Yeniproje/
 ├── model_training.ipynb
 ├── model_results.csv
 ├── README.md
-└── İnternetVeriSetleri/
-    ├── glass/
-    ├── metal/
-    ├── paper/
-    └── plastic/
+├── İnternetVeriSetleri/
+│   ├── glass/
+│   ├── metal/
+│   ├── paper/
+│   └── plastic/
+└── project/
+    ├── api/
+    │   ├── app.py
+    │   ├── streamlit_app.py
+    │   ├── requirements.txt
+    │   ├── model/model.h5
+    │   └── utils/predictor.py
+    └── web/
 ```
 
 ## Amaç
 
-Bu proje, görüntü tabanlı malzeme tanıma için temel bir derin öğrenme akışı sunar. Amaç; veri yükleme, model eğitimi, performans analizi ve görselleştirmeyi tek notebook içinde toplamak ve anlaşılır bir rapor üretmektir.
+Bu proje, görüntü tabanlı malzeme tanıma için eksiksiz bir ödev teslimi sunar: veri seti hazırlığı, model eğitimi, overfitting kontrolü, performans analizi ve çalışan web arayüzü tek yerde toplanmıştır.

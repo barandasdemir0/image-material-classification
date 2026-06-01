@@ -1,0 +1,12 @@
+{
+  // Pyrefly tip denetleyicisini .ipynb dosyalarında devre dışı bırak.
+  // Pyrefly her hücreyi bağımsız analiz ettiği için import'ları göremez
+  // ve sahte hatalar üretir. Notebook çalışırken bu hatalar gerçek değildir.
+  "pyrefly.enabledForNotebooks": false,
+
+  // Alternatif olarak tüm Pyrefly analizini kapat (isteğe bağlı):
+  // "pyrefly.enable": false,
+
+  // Python tip denetimi için Pylance kullan (notebooks'u doğru analiz eder):
+  "python.analysis.typeCheckingMode": "off"
+}

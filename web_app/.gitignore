@@ -1,0 +1,16 @@
+# Ignore trained model files and large artifacts
+model/*.h5
+*.h5
+
+# Python caches and environments
+__pycache__/
+*.pyc
+.env
+.venv/
+
+# Editor/project files
+.vscode/
+.DS_Store
+
+# Uploaded files during runtime
+uploads/
