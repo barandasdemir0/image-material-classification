@@ -1,2 +1,9 @@
 /.venv
 /İnternetVeriSetleri
+/verisetleri
+/BirlesikVeriSeti
+/web_app/uploads/*
+!/web_app/uploads/.gitkeep
+/Proje_Sunum_Raporu.txt
+/model_comparison_results_4models.csv
+/class_mapping_cell.py
